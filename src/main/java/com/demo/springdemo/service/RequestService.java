@@ -3,16 +3,16 @@ package com.demo.springdemo.service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -155,6 +155,58 @@ public class RequestService{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public String copyFilesFromRemoteToLocal(){
+		String remoteUsername = "hoang";
+		String password = "hoangkktt123";
+		String remoteHost = "hoang-virtual-machine";
+		String localFilePath = "C:\\Users\\huyho\\Pc\\Desktop\\SampleData";
+		String remoteFilePath = "/home/hoang/Desktop/SampleData";
+
+		try {
+			JSch jSch = new JSch();
+			Session session = jSch.getSession(remoteUsername, remoteHost, 22);
+			session.setPassword(password);
+			session.setConfig("StrictHostKeyChecking", "no");
+			session.connect();
+			if(session.isConnected()){
+				System.out.println("Da connect server thanh cong!!!");
+				ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+				channelSftp.connect();
+
+				channelSftp.cd(remoteFilePath);
+
+				@SuppressWarnings("unchecked")
+				Vector<ChannelSftp.LsEntry> list = channelSftp.ls("*");
+
+				for (ChannelSftp.LsEntry entry : list) {
+					if (!entry.getAttrs().isDir()) {
+						String remoteFileName = entry.getFilename();
+						InputStream remoteFileInputStream = channelSftp.get(remoteFileName);
+
+						File localFile = new File(localFilePath, remoteFileName);
+						FileOutputStream localFileOutputStream = new FileOutputStream(localFile);
+						byte[] buffer = new byte[1024];
+						int bytesRead;
+						while ((bytesRead = remoteFileInputStream.read(buffer)) != -1) {
+							localFileOutputStream.write(buffer, 0, bytesRead);
+						}
+
+						localFileOutputStream.close();
+						remoteFileInputStream.close();
+					}
+				}
+
+				channelSftp.disconnect();
+			}
+
+			session.disconnect();
+			System.out.println("Da disconnect server thanh cong!!!");
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
+		return localFilePath;
 	}
 	
 }

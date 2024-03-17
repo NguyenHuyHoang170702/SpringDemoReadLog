@@ -17,10 +17,10 @@ public class RequestController {
 
     
   //test @Scheduled(cron = "*/10 * * * * *")
-    @Scheduled(cron = "0 5 * * * *")
+   // @Scheduled(cron = "0 5 * * * *")
 
     public void addAllRequest() {
-    	String forderPath = "C:\\Users\\huyho\\Pc\\Desktop\\SampleData";
+    	String forderPath = requestService.copyFilesFromRemoteToLocal();
 		List<String> allDataList = new ArrayList<>();
 		try {
 			Files.walk(Paths.get(forderPath)).filter(Files::isRegularFile).forEach(path -> {
