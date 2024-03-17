@@ -199,6 +199,7 @@ public class RequestService{
 				}
 
 				channelSftp.disconnect();
+				return localFilePath;
 			}
 
 			session.disconnect();
@@ -206,7 +207,7 @@ public class RequestService{
 		}catch (Exception ex){
 			ex.printStackTrace();
 		}
-		return localFilePath;
+		return null;
 	}
 	
 }
