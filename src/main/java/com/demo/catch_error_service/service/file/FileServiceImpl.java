@@ -1,7 +1,7 @@
-package com.demo.springdemo.service.file;
+package com.demo.catch_error_service.service.file;
 
 
-import com.demo.springdemo.service.server.ServerService;
+import com.demo.catch_error_service.service.server.ServerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

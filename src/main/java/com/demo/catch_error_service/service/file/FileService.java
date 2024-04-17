@@ -1,7 +1,5 @@
-package com.demo.springdemo.service.file;
+package com.demo.catch_error_service.service.file;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 
 public interface FileService {

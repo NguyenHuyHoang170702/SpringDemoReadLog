@@ -1,11 +1,9 @@
-	package com.demo.springdemo;
+	package com.demo.catch_error_service;
 	import org.springframework.boot.SpringApplication;
 	import org.springframework.boot.autoconfigure.SpringBootApplication;
-	import org.springframework.scheduling.annotation.EnableScheduling;
 
 
-
-	@SpringBootApplication
+    @SpringBootApplication
 //	@EnableScheduling
 	public class SpringDemoApplication {	
 		public static void main(String[] args) {
