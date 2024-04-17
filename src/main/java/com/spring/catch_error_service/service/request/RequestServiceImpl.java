@@ -1,9 +1,9 @@
-package com.demo.catch_error_service.service.request;
+package com.spring.catch_error_service.service.request;
 
 
-import com.demo.catch_error_service.entity.Request;
-import com.demo.catch_error_service.repository.RequestRepository;
-import com.demo.catch_error_service.service.catch_err.CatchErrService;
+import com.spring.catch_error_service.entity.Request;
+import com.spring.catch_error_service.repository.RequestRepository;
+import com.spring.catch_error_service.service.catch_err.CatchErrService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

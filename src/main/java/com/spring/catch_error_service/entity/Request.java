@@ -1,4 +1,4 @@
-package com.demo.catch_error_service.entity;
+package com.spring.catch_error_service.entity;
 
 import java.util.Date;
 

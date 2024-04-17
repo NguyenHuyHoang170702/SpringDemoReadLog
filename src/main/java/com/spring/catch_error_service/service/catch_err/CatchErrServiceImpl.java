@@ -1,7 +1,7 @@
-package com.demo.catch_error_service.service.catch_err;
+package com.spring.catch_error_service.service.catch_err;
 
 
-import com.demo.catch_error_service.service.file.FileService;
+import com.spring.catch_error_service.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.demo.catch_error_service.service.server;
+package com.spring.catch_error_service.service.server;
 
 import com.jcraft.jsch.Session;
 

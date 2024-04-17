@@ -1,4 +1,4 @@
-package com.demo.catch_error_service.service.catch_err;
+package com.spring.catch_error_service.service.catch_err;
 
 import java.util.List;
 

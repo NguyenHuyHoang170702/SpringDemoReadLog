@@ -1,6 +1,6 @@
-package com.demo.catch_error_service.controller;
+package com.spring.catch_error_service.controller;
 
-import com.demo.catch_error_service.service.request.RequestService;
+import com.spring.catch_error_service.service.request.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    //@Scheduled(cron = "*/10 * * * * *")
+    //@Scheduled(cron = "0 5 0 * * *")
     @PostMapping("/push-request-err")
     public ResponseEntity<String> pushRequestDataToDB() {
 		try {
