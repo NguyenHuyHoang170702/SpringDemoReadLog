@@ -16,12 +16,10 @@ public class RequestController {
     //@Scheduled(cron = "0 5 0 * * *")
     @PostMapping("/push-request-err")
     public ResponseEntity<String> pushRequestDataToDB() {
-		try {
-            requestService.saveAllRequest();
-			return ResponseEntity.status(HttpStatus.OK).body("save all data successfully");
-		}catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error to save all data successfully");
-		}
+        if (requestService.saveAllRequest()) {
+            return ResponseEntity.status(HttpStatus.OK).body("save all data successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error to save all data");
+        }
     }
-
 }

@@ -17,13 +17,14 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class RequestServiceImpl implements RequestService{
+public class RequestServiceImpl implements RequestService {
     @Autowired
     private CatchErrService catchErrService;
     @Autowired
     private RequestRepository requestRepository;
+
     @Override
-    public void saveAllRequest() {
+    public Boolean saveAllRequest() {
         try {
             List<String> data = catchErrService.getLogByErrorId();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -32,7 +33,10 @@ public class RequestServiceImpl implements RequestService{
                 Map<String, Object> requestObject;
                 String[] LogArr = item.split("///");
                 try {
-                    requestObject = objectMapper.readValue(LogArr[1], Map.class);
+                    String requestId = LogArr[0];
+                    String requests = LogArr[1];
+
+                    requestObject = objectMapper.readValue(requests, Map.class);
 
                     String url = (String) requestObject.get("url");
                     String method = (String) requestObject.get("method");
@@ -40,21 +44,25 @@ public class RequestServiceImpl implements RequestService{
 
                     Request request = new Request();
                     request.setUrl(url);
-                    request.setRequestId(LogArr[0]);
+                    request.setRequestId(requestId);
                     request.setMethod(method);
                     request.setJsonData(json);
                     request.setCreateDate(new Date());
                     request.setUpdateDate(new Date());
                     request.setRetry(true);
                     request.setPush(true);
+
                     requestList.add(request);
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                    log.error("error to parse json to object: " + e.getMessage());
                 }
             });
             requestRepository.saveAll(requestList);
-        }catch (Exception e){
-            log.error("error to save request: "+e.getMessage());
+            return true;
+
+        } catch (Exception e) {
+            log.error("error to save request: " + e.getMessage());
         }
+        return false;
     }
 }
