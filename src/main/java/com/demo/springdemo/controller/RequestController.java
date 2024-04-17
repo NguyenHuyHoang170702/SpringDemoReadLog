@@ -1,47 +1,32 @@
 package com.demo.springdemo.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import com.demo.springdemo.service.catchErr.CatchErrService;
+import com.demo.springdemo.service.file.FileService;
+import com.demo.springdemo.service.request.RequestService;
+import com.demo.springdemo.service.server.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
-import com.demo.springdemo.entity.Request;
-import com.demo.springdemo.service.RequestService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class RequestController {
+
     @Autowired
     private RequestService requestService;
 
-    
-  //test @Scheduled(cron = "*/10 * * * * *")
-   // @Scheduled(cron = "0 5 * * * *")
-
-    public void addAllRequest() {
-    	String forderPath = requestService.copyFilesFromRemoteToLocal();
-		List<String> allDataList = new ArrayList<>();
+    //@Scheduled(cron = "*/10 * * * * *")
+    @PostMapping("/read-log-file")
+    public ResponseEntity<String> copy() {
 		try {
-			Files.walk(Paths.get(forderPath)).filter(Files::isRegularFile).forEach(path -> {
-				String fileName = path.getFileName().toString();
-				if (fileName.endsWith(".log")) {
-					// System.out.println("this is log file: "+ fileName);
-					requestService.readLogFile(path, allDataList);
-
-				} else if (fileName.endsWith(".zip") || fileName.endsWith(".rar")) {
-					requestService.readLogZipFile(path.toFile(), allDataList);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-	
-			List<Request> requests =  requestService.AddRequestToDB(allDataList);
-			requestService.saveAll(requests);
-			
+            requestService.saveAllRequest();
+			return ResponseEntity.status(HttpStatus.OK).body("save all data successfully");
+		}catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error to save all data successfully");
 		}
     }
-
 
 }
