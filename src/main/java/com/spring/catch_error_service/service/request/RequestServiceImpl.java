@@ -19,23 +19,14 @@ import java.util.Map;
 @Slf4j
 public class RequestServiceImpl implements RequestService {
     @Autowired
-    private CatchErrService catchErrService;
-    @Autowired
     private RequestRepository requestRepository;
 
     @Override
-    public Boolean saveAllRequest() {
+    public void saveRequest(String requestId, String requests) {
         try {
-            List<String> data = catchErrService.getLogByErrorId();
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Request> requestList = new ArrayList<>();
-            data.forEach(item -> {
                 Map<String, Object> requestObject;
-                String[] LogArr = item.split("///");
                 try {
-                    String requestId = LogArr[0];
-                    String requests = LogArr[1];
-
                     requestObject = objectMapper.readValue(requests, Map.class);
 
                     String url = (String) requestObject.get("url");
@@ -52,17 +43,12 @@ public class RequestServiceImpl implements RequestService {
                     request.setRetry(true);
                     request.setPush(true);
 
-                    requestList.add(request);
+                    requestRepository.save(request);
                 } catch (JsonProcessingException e) {
                     log.error("error to parse json to object: " + e.getMessage());
                 }
-            });
-            requestRepository.saveAll(requestList);
-            return true;
-
         } catch (Exception e) {
             log.error("error to save request: " + e.getMessage());
         }
-        return false;
     }
 }

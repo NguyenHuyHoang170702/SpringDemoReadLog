@@ -2,6 +2,7 @@ package com.spring.catch_error_service.service.catch_err;
 
 
 import com.spring.catch_error_service.service.file.FileService;
+import com.spring.catch_error_service.service.request.RequestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,21 +18,24 @@ public class CatchErrServiceImpl implements CatchErrService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private RequestService requestService;
+
     @Override
-    public List<String> getLogByErrorId() {
-        List<String> lstRequestString = new ArrayList<>();
+    public boolean getAndSaveLogByErrorId() {
         List<String> lstErrorRequestStrings = getAllErrorRequest();
         try {
             lstErrorRequestStrings.forEach(item -> {
                 String[] LogArr = item.split(" ");
-                String request = LogArr[4] + "///" + LogArr[7];
-                lstRequestString.add(request);
+                String requestId = LogArr.length > 4 ? LogArr[4] : "";
+                String requests = LogArr.length > 7 ? LogArr[7] : "";
+                this.requestService.saveRequest(requestId,requests);
             });
-            return lstRequestString;
+            return true;
         } catch (Exception e) {
-            log.error("error to get log by error id: " + e.getMessage());
+            log.error("error to get and save log by error id: " + e.getMessage());
         }
-        return null;
+        return false;
     }
 
     public List<String> findErrorId() {
