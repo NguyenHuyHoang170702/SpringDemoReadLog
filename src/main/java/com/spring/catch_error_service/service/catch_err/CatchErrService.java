@@ -1,5 +1,7 @@
 package com.spring.catch_error_service.service.catch_err;
 
+import java.util.List;
+
 public interface CatchErrService {
-    public boolean getAndSaveLogByErrorId();
+    public List<String> getLogByErrorId();
 }

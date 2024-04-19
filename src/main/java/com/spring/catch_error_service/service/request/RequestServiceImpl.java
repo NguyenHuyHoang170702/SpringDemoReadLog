@@ -28,7 +28,7 @@ public class RequestServiceImpl implements RequestService {
     private ErrorFormatRepository errorFormatRepository;
 
     @Override
-    public Boolean saveAllRequest() {
+    public boolean saveAllRequest() {
         try {
             List<String> data = catchErrService.getLogByErrorId();
             List<Request> requestList = new ArrayList<>();

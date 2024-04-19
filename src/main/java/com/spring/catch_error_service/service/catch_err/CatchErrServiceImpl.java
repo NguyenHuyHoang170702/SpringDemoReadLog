@@ -24,8 +24,12 @@ public class CatchErrServiceImpl implements CatchErrService {
         try {
             lstErrorRequestStrings.forEach(item -> {
                 String[] LogArr = item.split(" ");
-                String request = LogArr[4] + "///" + LogArr[7];
-                lstRequestString.add(request);
+                String requestId = LogArr.length >=5 ? LogArr[4] : "null";
+                String requests = LogArr.length >=8 ? LogArr[7] : "null";
+                if(!requestId.isEmpty() && !requests.isEmpty()){
+                    String request = requestId + "///" +requests;
+                    lstRequestString.add(request);
+                }
             });
             return lstRequestString;
         } catch (Exception e) {
