@@ -45,8 +45,10 @@ public class CatchErrServiceImpl implements CatchErrService {
             for (String dataLine : allDataList) {
                 if (dataLine.contains("[ERROR]")) {
                     String[] errorLine = dataLine.split(" ");
-                    String errorID = errorLine[4];
-                    errorIdArrList.add(errorID);
+                    if(errorLine.length >=4){
+                        String errorID = errorLine[4];
+                        errorIdArrList.add(errorID);
+                    }
                 }
             }
             if (errorIdArrList.isEmpty()) {
