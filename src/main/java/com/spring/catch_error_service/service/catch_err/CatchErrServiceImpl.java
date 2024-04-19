@@ -24,9 +24,7 @@ public class CatchErrServiceImpl implements CatchErrService {
         try {
             lstErrorRequestStrings.forEach(item -> {
                 String[] LogArr = item.split(" ");
-                String requestId = LogArr.length >=3 ? LogArr[4] : "null";
-                String requests = LogArr.length >=8 ? LogArr[7] : "null";
-                String request = requestId + "///" + requests;
+                String request = LogArr[4] + "///" + LogArr[7];
                 lstRequestString.add(request);
             });
             return lstRequestString;

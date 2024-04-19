@@ -1,5 +1,6 @@
 package com.spring.catch_error_service.controller;
 
+import com.spring.catch_error_service.service.catch_err.CatchErrService;
 import com.spring.catch_error_service.service.request.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestController {
 
     @Autowired
-    private RequestService requestService;
+    private CatchErrService catchErrService;
 
     //@Scheduled(cron = "0 5 0 * * *")
     @PostMapping("/push-request-err")
     public ResponseEntity<String> pushRequestDataToDB() {
-        if (requestService.saveAllRequest()) {
+        if (catchErrService.getAndSaveLogByErrorId()) {
             return ResponseEntity.status(HttpStatus.OK).body("save all data successfully");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error to save all data");
