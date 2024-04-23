@@ -30,31 +30,27 @@ public class FileServiceImpl implements FileService {
             Files.walk(Paths.get(localFilePath)).filter(Files::isRegularFile).forEach(path -> {
                 String fileName = path.getFileName().toString();
                 if (fileName.endsWith(".log")) {
-                    allDataList.addAll(readLogFile(path));
+                    readLogFile(path, allDataList);
                 } else if (fileName.endsWith(".zip")) {
-                    allDataList.addAll(readLogZipFile(path.toFile()));
+                    readLogZipFile(path.toFile(), allDataList);
                 }
             });
             return new ArrayList<>(allDataList);
         } catch (Exception e) {
             log.error("error to read all data");
+            return Collections.emptyList();
         }
-        return null;
     }
 
-    public List<String> readLogFile(Path path) {
-        List<String> allDataList = new ArrayList<>();
+    public void readLogFile(Path path, List<String> allDataList) {
         try (var oneLineData = Files.lines(path)) {
             oneLineData.forEach(allDataList::add);
         } catch (IOException e) {
             log.error("error to read log file", e);
-            return Collections.emptyList();
         }
-        return allDataList;
     }
 
-    public List<String> readLogZipFile(File file) {
-        List<String> allDataList = new ArrayList<>();
+    public void readLogZipFile(File file, List<String> allDataList) {
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file))) {
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.getNextEntry()) != null) {
@@ -69,9 +65,6 @@ public class FileServiceImpl implements FileService {
             }
         } catch (IOException e) {
             log.error("error to read zip file", e);
-            return Collections.emptyList();
         }
-        return allDataList;
     }
-
 }
